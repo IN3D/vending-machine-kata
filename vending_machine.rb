@@ -1,4 +1,5 @@
-# Write me
+# A vending machine object is initalized with a coin set, this tells the
+# machine which coins it knows of, and what value it assigns to them.
 class VendingMachine
   def initialize(coin_set)
     @coin_set = coin_set
