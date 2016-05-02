@@ -3,6 +3,7 @@
 class VendingMachine
   def initialize(coin_set)
     @coin_set = coin_set
+    @inserted = []
     @coin_return = []
   end
 
@@ -11,14 +12,24 @@ class VendingMachine
   end
 
   def insert(coin)
-    if @coin_set.include? coin
-      @inserted << coin
-    else
-      @coin_return << coin
-    end
+    in_set?(coin) ? @inserted << coin : @coin_return << coin
   end
 
   def coin_return
     @coin_return.pop(@coin_return.length)
+  end
+
+  def value
+    @inserted.inject(0) do |sum, coin|
+      sum + @coin_set.find { |c| c[:coin] == coin }[:value]
+    end
+  end
+
+  private
+
+  def in_set?(coin)
+    included = false
+    @coin_set.each { |c| included = true if !included && c[:coin] == coin }
+    included
   end
 end

@@ -31,4 +31,10 @@ describe 'A Vending Machine' do
     returned = vending_machine.coin_return
     expect(returned).to eq [@penny]
   end
+
+  it "should show the user the amount they've entered on request" do
+    vending_machine = VendingMachine.new(@coin_set)
+    vending_machine.insert(@nickel)
+    expect(vending_machine.value).to eq 0.05
+  end
 end
