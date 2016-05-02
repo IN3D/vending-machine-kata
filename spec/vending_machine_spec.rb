@@ -12,29 +12,46 @@ describe 'A Vending Machine' do
       { coin: @dime, value: 0.10 },
       { coin: @quarter, value: 0.25 }
     ]
+    @product_set = [
+      { name: 'cola', price: 1.0 },
+      { name: 'chips', price: 0.5 },
+      { name: 'candy', price: 0.65 }
+    ]
   end
 
   it 'should display "INSERT COIN" when the machine is empty' do
-    vending_machine = VendingMachine.new(@coin_set)
+    vending_machine = VendingMachine.new(@coin_set, nil)
     expect(vending_machine.display).to eq('INSERT COIN')
   end
 
   it 'should accept coins' do
-    vending_machine = VendingMachine.new(@coin_set)
+    vending_machine = VendingMachine.new(@coin_set, nil)
     result = vending_machine.insert(@nickel)
     expect(result).to eq [@nickel]
   end
 
   it 'should put invalid coins into the coin return' do
-    vending_machine = VendingMachine.new(@coin_set)
+    vending_machine = VendingMachine.new(@coin_set, nil)
     vending_machine.insert(@penny)
     returned = vending_machine.coin_return
     expect(returned).to eq [@penny]
   end
 
   it "should show the user the amount they've entered on request" do
-    vending_machine = VendingMachine.new(@coin_set)
+    vending_machine = VendingMachine.new(@coin_set, nil)
     vending_machine.insert(@nickel)
     expect(vending_machine.value).to eq 0.05
+  end
+
+  it 'should return nil if there are no products' do
+    vending_machine = VendingMachine.new(@coin_set, [])
+    bought = vending_machine.buy('cola')
+    expect(bought).to eq nil
+  end
+
+  it 'should return a product if it is found' do
+    vending_machine = VendingMachine.new(@coin_set, @product_set)
+    bought = vending_machine.buy('cola')
+    expect(bought).to eq @product_set[0]
   end
 end

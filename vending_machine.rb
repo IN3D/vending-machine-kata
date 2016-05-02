@@ -1,10 +1,15 @@
 # A vending machine object is initalized with a coin set, this tells the
 # machine which coins it knows of, and what value it assigns to them.
 class VendingMachine
-  def initialize(coin_set)
+  def initialize(coin_set, product_set)
     @coin_set = coin_set
+    @product_set = product_set
     @inserted = []
     @coin_return = []
+  end
+
+  def buy(name)
+    @product_set.find { |p| p[:name] == name }
   end
 
   def display
