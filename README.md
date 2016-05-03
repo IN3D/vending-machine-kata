@@ -19,3 +19,10 @@ For nicer output, append the color flag:
 ```
 rspec --color
 ```
+
+All files were linted with Rubocop, to run this linter. Go to the root of the
+project and run:
+```
+rubocop
+```
+All files should pass inspection.
