@@ -1,9 +1,14 @@
-# A vending machine object is initalized with a coin set, this tells the
-# machine which coins it knows of, and what value it assigns to them.
+# A vending machine is created with a coin set, a product set and a bank.
+# The coin set informs the vending machine of what coins it accepts, and what
+# value it assigns to those coins.
+# A product set tells the vending machine which products it has, what it charges
+# for them, and how many of them are in the machine.
+# The bank will pre-fill the machine with change.
 class VendingMachine
-  def initialize(coin_set, product_set)
-    @coin_set = coin_set
-    @product_set = product_set
+  def initialize(coin_set, product_set, bank)
+    @bank = bank.is_a?(Array) ? bank : []
+    @coin_set = coin_set.is_a?(Array) ? coin_set : []
+    @product_set = product_set.is_a?(Array) ? product_set : []
     @inserted = []
     @coin_return = []
     @messages = []
@@ -17,7 +22,8 @@ class VendingMachine
 
   def display
     message = @messages.pop
-    message.nil? ? 'INSERT COIN' : message
+    default = banked == 0 ? 'EXACT CHANGE ONLY' : 'INSERT COIN'
+    message.nil? ? default : message
   end
 
   def make_change(amount)
@@ -54,6 +60,12 @@ class VendingMachine
   def alert_price_of(product)
     @messages << "PRICE $#{product[:price]}"
     nil
+  end
+
+  def banked
+    @bank.inject(0) do |sum, coin|
+      sum + @coin_set.find { |c| c[:coin] == coin }[:value]
+    end
   end
 
   def in_set?(coin)
