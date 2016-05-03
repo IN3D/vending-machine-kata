@@ -66,17 +66,14 @@ class VendingMachine
   end
 
   def in_set?(coin)
-    included = false
-    @coin_set.each { |c| included = true if !included && c[:coin] == coin }
-    included
+    !@coin_set.select { |c| c[:coin] == coin }.empty?
   end
 
   def purchase(product)
     if product[:amount] > 0
       @coin_return = make_change((value - product[:price]).round(2))
       @messages << 'THANK YOU'
-      @bank << return_inserted
-      @bank.flatten!
+      (@bank << return_inserted).flatten!
       product
     else
       @messages << 'SOLD OUT'
