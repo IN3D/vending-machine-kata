@@ -33,6 +33,7 @@ class VendingMachine
   def make_change(amount)
     coins = []
     @coin_set.each do |c|
+      next if @bank.select { |b| b == c[:coin] }.empty?
       num = (amount / c[:value]).floor
       coins = withdraw(num, c[:coin], coins)
       amount -= c[:value] * num
@@ -92,8 +93,10 @@ class VendingMachine
   def withdraw(num, coin, collection)
     Array.new(num).each do |_|
       index = @bank.find_index coin
-      @bank.delete_at index
-      collection << coin
+      unless index.nil?
+        @bank.delete_at index
+        collection << coin
+      end
     end
     collection
   end
