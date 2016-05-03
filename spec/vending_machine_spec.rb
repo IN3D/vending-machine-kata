@@ -59,9 +59,20 @@ describe 'A Vending Machine' do
     expect(bought).to eq nil
   end
 
-  it 'should return a product if it is found' do
+  it 'should return nil if requesting a non-existant product' do
     vending_machine = VendingMachine.new(@coin_set, @product_set)
+    vending_machine.insert(@quarter, @quarter, @quarter, @quarter)
+    bought = vending_machine.buy('widget')
+    expect(bought).to eq nil
+    expect(vending_machine.display).to eq 'INSERT COIN'
+  end
+
+  it 'should return a product if enough money has been entered' do
+    vending_machine = VendingMachine.new(@coin_set, @product_set)
+    vending_machine.insert(@quarter, @quarter, @quarter, @quarter)
     bought = vending_machine.buy('cola')
     expect(bought).to eq @product_set[0]
+    expect(vending_machine.display).to eq 'THANK YOU'
+    expect(vending_machine.display).to eq 'INSERT COIN'
   end
 end

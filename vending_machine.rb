@@ -6,14 +6,19 @@ class VendingMachine
     @product_set = product_set
     @inserted = []
     @coin_return = []
+    @messages = []
   end
 
   def buy(name)
-    @product_set.find { |p| p[:name] == name }
+    product = @product_set.find { |p| p[:name] == name }
+    bought = !product.nil? && value >= product[:price] ? product : nil
+    @messages << 'THANK YOU' unless bought.nil?
+    bought
   end
 
   def display
-    'INSERT COIN'
+    message = @messages.pop
+    message.nil? ? 'INSERT COIN' : message
   end
 
   def insert(*coins)
