@@ -50,9 +50,7 @@ class VendingMachine
   end
 
   def value
-    @inserted.inject(0) do |sum, coin|
-      sum + @coin_set.find { |c| c[:coin] == coin }[:value]
-    end
+    value_of @inserted
   end
 
   private
@@ -63,9 +61,7 @@ class VendingMachine
   end
 
   def banked
-    @bank.inject(0) do |sum, coin|
-      sum + @coin_set.find { |c| c[:coin] == coin }[:value]
-    end
+    value_of @bank
   end
 
   def in_set?(coin)
@@ -84,6 +80,12 @@ class VendingMachine
     else
       @messages << 'SOLD OUT'
       nil
+    end
+  end
+
+  def value_of(arr)
+    arr.inject(0) do |sum, coin|
+      sum + @coin_set.find { |c| c[:coin] == coin }[:value]
     end
   end
 end
