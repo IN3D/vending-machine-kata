@@ -11,9 +11,14 @@ class VendingMachine
 
   def buy(name)
     product = @product_set.find { |p| p[:name] == name }
-    bought = !product.nil? && value >= product[:price] ? product : nil
-    @messages << 'THANK YOU' unless bought.nil?
-    bought
+    return if product.nil?
+    if value >= product[:price]
+      @messages << 'THANK YOU'
+      product
+    else
+      @messages << "PRICE $#{product[:price]}"
+      nil
+    end
   end
 
   def display

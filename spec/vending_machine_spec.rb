@@ -75,4 +75,13 @@ describe 'A Vending Machine' do
     expect(vending_machine.display).to eq 'THANK YOU'
     expect(vending_machine.display).to eq 'INSERT COIN'
   end
+
+  it 'should show the price if enough money has not been entered' do
+    vending_machine = VendingMachine.new(@coin_set, @product_set)
+    vending_machine.insert(@quarter)
+    bought = vending_machine.buy('cola')
+    expect(bought).to eq nil
+    expect(vending_machine.display).to eq 'PRICE $1.0'
+    expect(vending_machine.display).to eq 'INSERT COIN'
+  end
 end
