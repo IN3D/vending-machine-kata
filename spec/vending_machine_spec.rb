@@ -24,10 +24,20 @@ describe 'A Vending Machine' do
     expect(vending_machine.display).to eq('INSERT COIN')
   end
 
-  it 'should accept coins' do
+  it 'should accept a coin' do
     vending_machine = VendingMachine.new(@coin_set, nil)
     result = vending_machine.insert(@nickel)
-    expect(result).to eq [@nickel]
+    returned = vending_machine.return_inserted
+    expect(result).to eq nil
+    expect(returned).to eq [@nickel]
+  end
+
+  it 'should accept multiple coins' do
+    vending_machine = VendingMachine.new(@coin_set, nil)
+    result = vending_machine.insert(@dime, @dime, @quarter)
+    returned = vending_machine.return_inserted
+    expect(result).to eq nil
+    expect(returned).to eq [@dime, @dime, @quarter]
   end
 
   it 'should put invalid coins into the coin return' do

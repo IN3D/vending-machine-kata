@@ -16,12 +16,17 @@ class VendingMachine
     'INSERT COIN'
   end
 
-  def insert(coin)
-    in_set?(coin) ? @inserted << coin : @coin_return << coin
+  def insert(*coins)
+    coins.each { |c| in_set?(c) ? @inserted << c : @coin_return << c }
+    nil
   end
 
   def coin_return
     @coin_return.pop(@coin_return.length)
+  end
+
+  def return_inserted
+    @inserted.pop(@inserted.length)
   end
 
   def value
