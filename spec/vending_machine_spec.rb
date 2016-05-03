@@ -98,6 +98,12 @@ describe 'A Vending Machine' do
       expect(@vending_machine.display).to eq 'INSERT COIN'
     end
 
+    it 'should not be able to get the money back that was just spent' do
+      @vending_machine.insert(@quarter, @quarter, @quarter, @quarter)
+      expect(@vending_machine.buy('cola')).to eq @product_set[0]
+      expect(@vending_machine.return_inserted).to eq []
+    end
+
     it 'should alert the user they need exact change' do
       vending_machine = VendingMachine.new(@coin_set, @product_set, nil)
       expect(vending_machine.display).to eq 'EXACT CHANGE ONLY'

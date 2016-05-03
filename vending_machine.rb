@@ -78,6 +78,8 @@ class VendingMachine
     if product[:amount] > 0
       @coin_return = make_change((value - product[:price]).round(2))
       @messages << 'THANK YOU'
+      @bank << return_inserted
+      @bank.flatten!
       product
     else
       @messages << 'SOLD OUT'
