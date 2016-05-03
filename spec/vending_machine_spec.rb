@@ -8,9 +8,9 @@ describe 'A Vending Machine' do
     @dime = Coin.new(2.3, 0.71, 1.35)
     @quarter = Coin.new(5.7, 0.96, 1.75)
     @coin_set = [
-      { coin: @nickel, value: 0.05 },
+      { coin: @quarter, value: 0.25 },
       { coin: @dime, value: 0.10 },
-      { coin: @quarter, value: 0.25 }
+      { coin: @nickel, value: 0.05 }
     ]
     @product_set = [
       { name: 'cola', price: 1.0 },
@@ -82,6 +82,16 @@ describe 'A Vending Machine' do
     bought = vending_machine.buy('cola')
     expect(bought).to eq nil
     expect(vending_machine.display).to eq 'PRICE $1.0'
+    expect(vending_machine.display).to eq 'INSERT COIN'
+  end
+
+  it 'should return coins when more were entered than needed' do
+    vending_machine = VendingMachine.new(@coin_set, @product_set)
+    vending_machine.insert(@quarter, @quarter, @quarter)
+    bought = vending_machine.buy('candy')
+    expect(bought).to eq @product_set[2]
+    expect(vending_machine.coin_return).to eq [@dime]
+    expect(vending_machine.display).to eq 'THANK YOU'
     expect(vending_machine.display).to eq 'INSERT COIN'
   end
 end

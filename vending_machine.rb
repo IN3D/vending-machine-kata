@@ -12,18 +12,22 @@ class VendingMachine
   def buy(name)
     product = @product_set.find { |p| p[:name] == name }
     return if product.nil?
-    if value >= product[:price]
-      @messages << 'THANK YOU'
-      product
-    else
-      @messages << "PRICE $#{product[:price]}"
-      nil
-    end
+    value >= product[:price] ? purchase(product) : alert_price_of(product)
   end
 
   def display
     message = @messages.pop
     message.nil? ? 'INSERT COIN' : message
+  end
+
+  def make_change(amount)
+    coins = []
+    @coin_set.each do |c|
+      num = (amount / c[:value]).floor
+      Array.new(num).each { |_| coins << c[:coin] }
+      amount -= c[:value] * num
+    end
+    coins
   end
 
   def insert(*coins)
@@ -47,9 +51,20 @@ class VendingMachine
 
   private
 
+  def alert_price_of(product)
+    @messages << "PRICE $#{product[:price]}"
+    nil
+  end
+
   def in_set?(coin)
     included = false
     @coin_set.each { |c| included = true if !included && c[:coin] == coin }
     included
+  end
+
+  def purchase(product)
+    @coin_return = make_change((value - product[:price]).round(2))
+    @messages << 'THANK YOU'
+    product
   end
 end
