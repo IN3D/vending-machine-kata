@@ -13,9 +13,9 @@ describe 'A Vending Machine' do
       { coin: @nickel, value: 0.05 }
     ]
     @product_set = [
-      { name: 'cola', price: 1.0 },
-      { name: 'chips', price: 0.5 },
-      { name: 'candy', price: 0.65 }
+      { name: 'cola', price: 1.0, amount: 5 },
+      { name: 'chips', price: 0.5, amount: 0 },
+      { name: 'candy', price: 0.65, amount: 1 }
     ]
   end
 
@@ -92,6 +92,15 @@ describe 'A Vending Machine' do
     expect(bought).to eq @product_set[2]
     expect(vending_machine.coin_return).to eq [@dime]
     expect(vending_machine.display).to eq 'THANK YOU'
+    expect(vending_machine.display).to eq 'INSERT COIN'
+  end
+
+  it 'should return nil when the selected item is out, and says "SOLD OUT"' do
+    vending_machine = VendingMachine.new(@coin_set, @product_set)
+    vending_machine.insert(@quarter, @quarter)
+    bought = vending_machine.buy('chips')
+    expect(bought).to eq nil
+    expect(vending_machine.display).to eq 'SOLD OUT'
     expect(vending_machine.display).to eq 'INSERT COIN'
   end
 end

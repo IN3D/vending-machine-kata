@@ -63,8 +63,13 @@ class VendingMachine
   end
 
   def purchase(product)
-    @coin_return = make_change((value - product[:price]).round(2))
-    @messages << 'THANK YOU'
-    product
+    if product[:amount] > 0
+      @coin_return = make_change((value - product[:price]).round(2))
+      @messages << 'THANK YOU'
+      product
+    else
+      @messages << 'SOLD OUT'
+      nil
+    end
   end
 end
