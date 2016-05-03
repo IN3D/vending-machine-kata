@@ -24,10 +24,19 @@ class VendingMachine
     value >= product[:price] ? purchase(product) : alert_price_of(product)
   end
 
+  def coin_return
+    @coin_return.pop(@coin_return.length)
+  end
+
   def display
     message = @messages.pop
     default = banked == 0 ? 'EXACT CHANGE ONLY' : 'INSERT COIN'
     message.nil? ? default : message
+  end
+
+  def insert(*coins)
+    coins.each { |c| in_set?(c) ? @inserted << c : @coin_return << c }
+    nil
   end
 
   def make_change(amount)
@@ -39,15 +48,6 @@ class VendingMachine
       amount -= c[:value] * num
     end
     coins
-  end
-
-  def insert(*coins)
-    coins.each { |c| in_set?(c) ? @inserted << c : @coin_return << c }
-    nil
-  end
-
-  def coin_return
-    @coin_return.pop(@coin_return.length)
   end
 
   def return_inserted
