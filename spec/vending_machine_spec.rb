@@ -104,6 +104,14 @@ describe 'A Vending Machine' do
       expect(@vending_machine.return_inserted).to eq []
     end
 
+    it "should have more coins in it's bank after a purchase" do
+      banked = @vending_machine.banked
+      @vending_machine.insert(@quarter, @quarter, @quarter, @quarter)
+      expect(@vending_machine.buy('cola')).to eq @product_set[0]
+      expect(banked).to be < @vending_machine.banked
+      expect(@vending_machine.banked - banked).to eq 1.0
+    end
+
     it 'should alert the user they need exact change' do
       vending_machine = VendingMachine.new(@coin_set, @product_set, nil)
       expect(vending_machine.display).to eq 'EXACT CHANGE ONLY'

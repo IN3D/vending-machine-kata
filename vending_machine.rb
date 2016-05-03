@@ -14,6 +14,10 @@ class VendingMachine
     @messages = []
   end
 
+  def banked
+    value_of @bank
+  end
+
   def buy(name)
     product = @product_set.find { |p| p[:name] == name }
     return if product.nil?
@@ -30,7 +34,7 @@ class VendingMachine
     coins = []
     @coin_set.each do |c|
       num = (amount / c[:value]).floor
-      Array.new(num).each { |_| coins << c[:coin] }
+      coins = withdraw(num, c[:coin], coins)
       amount -= c[:value] * num
     end
     coins
@@ -60,10 +64,6 @@ class VendingMachine
     nil
   end
 
-  def banked
-    value_of @bank
-  end
-
   def in_set?(coin)
     included = false
     @coin_set.each { |c| included = true if !included && c[:coin] == coin }
@@ -87,5 +87,14 @@ class VendingMachine
     arr.inject(0) do |sum, coin|
       sum + @coin_set.find { |c| c[:coin] == coin }[:value]
     end
+  end
+
+  def withdraw(num, coin, collection)
+    Array.new(num).each do |_|
+      index = @bank.find_index coin
+      @bank.delete_at index
+      collection << coin
+    end
+    collection
   end
 end
