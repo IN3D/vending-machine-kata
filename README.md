@@ -1,5 +1,6 @@
 Vending Machine Kata
 ===
+You can see the Kata's requirements [here](https://github.com/guyroyse/vending-machine-kata).
 
 This repo contains a `.ruby-version` file, so if you are using rvm, it should
 automatically switch to ruby version 2.2.3, provided it is installed.
